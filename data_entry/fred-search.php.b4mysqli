@@ -1,0 +1,295 @@
+<?php 
+session_start();
+
+require("header.htm");
+require("funcs.php");
+
+$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
+    or die('Could not connect: ' . mysql_error());
+
+mysql_query("SET NAMES 'utf8'");
+
+mysql_select_db($db_name) or die('Could not select database');
+
+
+if ( isset( $_GET["id"] ) ) {
+   if ( $_GET["id"] == 1 ) {
+      $bib = 1;
+      $table_name="bib";
+   } elseif ( $_GET["id"] == 2 ) {
+      $bib = 2;
+      $table_name="bib2";
+   } else {
+      die( "Invalid id." );
+   }
+} else {
+   exit( "id not set" );
+}
+
+if ( isset( $_GET["updatefield"] ) ) {
+   $updatefield = $_GET["updatefield"] ;
+   if ( preg_match('/^\w+$/', $updatefield , $matches ) ) {
+      $updatefield = $matches[0];
+      echo "<br />updatefield=$updatefield<br />";
+   } else {
+      exit( "updatefield is tainted" );
+   }
+}
+
+if ( isset( $_GET["rowid"] ) ) {
+   $rowid = $_GET["rowid"] ;
+   if ( preg_match('/^\d+$/', $rowid , $matches ) ) {
+      $rowid = $matches[0];
+      echo "<br />rowid=$rowid<br />";
+   } else {
+      exit( "rowid is tainted" );
+   }
+}
+
+if ( isset( $updatefield ) && isset( $rowid ) ) {
+   Update_Row( $table_name, $rowid, $updatefield ) ;
+}
+
+$text_column_names=Get_Text_Column_Names( $table_name );
+
+// Performing SQL query
+
+$query = "SELECT ";
+$columnquery = "";
+$wherequery = "";
+
+foreach ( $text_column_names as $column ) {
+   if ( $columnquery != "" )
+      $columnquery .= ", ";
+   $columnquery .= "count( if( $column like '%&#%', 1, NULL ) ) '$column'";
+   if ( $wherequery != "" )
+      $wherequery .= " OR ";
+   $wherequery .= " $column like '%&#%'";
+}
+
+$query .= $columnquery . ", count(*) 'Total' FROM $table_name WHERE " . $wherequery ;
+
+$result = mysql_query( $query );
+echo "<br />Rows with html coded columns.<br />\n";
+echo '<table border="1">';
+while ( $row = mysql_fetch_assoc( $result ) ) {
+   echo "<tr>";
+   foreach ( $row as $col => $val ) {
+      if ( $val > 0 )
+         echo "<th>$col</th>";
+   }
+   echo "</tr>";
+   echo "<tr>";
+   foreach ( $row as $col => $val ) {
+      if ( $val > 0 )
+         echo "<td>$val</td>";
+   }
+   echo "</tr>";
+}
+echo '</table>';
+echo '<br />';
+echo '<br />';
+mysql_free_result( $result );
+
+
+$query = "SELECT * FROM $table_name WHERE " . $wherequery;
+
+# Display_Full_Table( $query );
+Display_Small_Table( $query );
+
+exit;
+   
+
+
+// Closing connection
+mysql_close($link);
+
+require("footer.htm");
+?> 
+</html>
+<?php 
+
+### #############################################################
+###
+### Function definitions...
+###
+### #############################################################
+
+function Get_Text_Column_Names( $table_name ) {
+
+   $columns=array();
+
+   $result = mysql_query( "
+      SELECT *
+      FROM information_schema.columns 
+      WHERE TABLE_SCHEMA='mamluk' 
+        AND TABLE_NAME='$table_name'
+        AND ( DATA_TYPE LIKE '%text%' OR DATA_TYPE LIKE '%char%' )
+      " );
+
+   while ( $row = mysql_fetch_assoc( $result ) ) {
+      array_push( $columns, $row["COLUMN_NAME"] );
+   }
+
+   mysql_free_result( $result );
+
+   return( $columns );
+}
+
+
+function utf8_entity_decode($entity){
+   // http://php.net/manual/en/function.mb-decode-numericentity.php
+   $convmap = array(0x0, 0x10000, 0, 0xfffff);
+   if ( is_array( $entity ) ) 
+      return mb_decode_numericentity($entity[0], $convmap, 'UTF-8');
+   else
+      return mb_decode_numericentity($entity, $convmap, 'UTF-8');
+}
+
+
+function Display_Full_Table( $query ) {
+
+   global $bib ;
+
+   $result = mysql_query( $query );
+   
+   $num = 0;
+   echo '<table border="1" >';
+   while ( $row = mysql_fetch_assoc( $result ) ) {
+      if ( $num++ == 0 ) {
+         echo '<tr>';
+         foreach ( $row as $col => $val ) {
+            echo "<th>$col</th>";
+         }
+         echo '</tr>';
+      }
+      echo '<tr>';
+      foreach ( $row as $col => $val ) {
+         echo "<td>";
+         if ( $col == "ID" ) {
+            echo '<a href="fullview.php?bib=' . $bib . '&id=' . $val . '">' . $val . '</a><br />';
+            echo '<a href="edit.php?bib=' . $bib . '&id=' . $val . '">Edit</a>';
+         } else {
+            echo $val;
+            if ( preg_match_all( '/(&#\d{2,5};)/', $val, $matches ) ) {
+               echo '<br />';
+               foreach ( $matches[1] as $match ) {
+                  $code = substr( $match, 1 );
+                  echo "&amp;$code = $match : " . utf8_entity_decode( $match ) . '<br />';
+               }
+               $newval = preg_replace_callback( '/(&#\d{2,5};)/', 'utf8_entity_decode', $val );
+               echo $newval;
+               if ( preg_match_all( '/(&#\d{2,5};)/', $newval, $newmatches ) ) {
+                  echo '<br />';
+                  foreach ( $matches[1] as $match ) {
+                     echo "$match : " . utf8_entity_decode( $match ) . '<br />';
+                  }
+               }
+               echo '<br />Old/New lengths: ' . strlen( $val ) . '/' . strlen( $newval ) ;
+            }
+         }
+      }
+      echo '</tr>';
+   }
+   echo '</table>';
+   mysql_free_result($result);
+
+}
+
+function Display_Small_Table( $query ) {
+   // Only display fields that have HTML encoded unicode characters (i.e., &#nnnn; )
+
+   global $bib ;
+
+   $result = mysql_query( $query );
+   
+   $id = 0;
+   $num = 0;
+   echo '<table border="1" >';
+   echo '<tr>';
+   echo '<th>ID</th>';
+   echo '<th>Fields with HTML encoded Unicode characters</th>';
+   echo '</tr>';
+   while ( $row = mysql_fetch_assoc( $result ) ) {
+      echo '<tr>';
+      foreach ( $row as $col => $val ) {
+         if ( $col == "ID" ) {
+            echo "<td>";
+            echo '<a href="fullview.php?bib=' . $bib . '&id=' . $val . '">' . $val . '</a><br />';
+            echo '<a href="edit.php?bib=' . $bib . '&id=' . $val . '">Edit</a>';
+            echo "</td>";
+            echo "<td>";
+            echo '<table border="1">';
+            $id = $val;
+         } else {
+            ## echo $val;
+            if ( preg_match_all( '/(&#\d{2,5};)/', $val, $matches ) ) {
+               echo "<tr>";
+               echo "<td>";
+               echo "<strong>$col:</strong><br />";
+               echo '<a href="?id=' . $bib . '&rowid=' . $id . '&updatefield=' . $col ,'">Fix</a>';
+               echo "</td>";
+               echo "<td>";
+               echo $val;
+               echo '<br />';
+               foreach ( $matches[1] as $match ) {
+                  $code = substr( $match, 1 );
+                  echo "&amp;$code = $match : " . utf8_entity_decode( $match ) . '<br />';
+               }
+               $newval = preg_replace_callback( '/(&#\d{2,5};)/', 'utf8_entity_decode', $val );
+               echo $newval;
+               if ( preg_match_all( '/(&#\d{2,5};)/', $newval, $newmatches ) ) {
+                  echo '<br />';
+                  foreach ( $matches[1] as $match ) {
+                     echo "$match : " . utf8_entity_decode( $match ) . '<br />';
+                  }
+               }
+               echo '<br />Old/New lengths: ' . strlen( $val ) . '/' . strlen( $newval ) ;
+               echo '</td>';
+               echo '</tr>';
+            }
+         }
+      }
+      echo "</table>";
+      echo "</td>";
+      echo '</tr>';
+   }
+   echo '</table>';
+   mysql_free_result($result);
+
+}
+
+function Update_Row( $table_name, $rowid, $updatefield ) {
+
+   $query = "SELECT ID, $updatefield FROM $table_name WHERE ID=$rowid";
+   $result = mysql_query( $query );
+   while ( $row = mysql_fetch_assoc( $result ) ) {
+      $val = $row[$updatefield];
+      echo "<p>" . $row["ID"] .": " . $val . "</p>\n";
+      if ( preg_match_all( '/(&#\d{2,5};)/', $val, $matches ) ) {
+         echo '<br />';
+         foreach ( $matches[1] as $match ) {
+            $code = substr( $match, 1 );
+            echo "&amp;$code = $match : " . utf8_entity_decode( $match ) . '<br />';
+         }
+         $newval = preg_replace_callback( '/(&#\d{2,5};)/', 'utf8_entity_decode', $val );
+         echo $newval;
+         if ( preg_match_all( '/(&#\d{2,5};)/', $newval, $newmatches ) ) {
+            echo '<br />';
+            foreach ( $matches[1] as $match ) {
+               echo "$match : " . utf8_entity_decode( $match ) . '<br />';
+            }
+         }
+         echo '<br />Old/New lengths: ' . strlen( $val ) . '/' . strlen( $newval ) ;
+         $updatequery = "UPDATE $table_name SET $updatefield = ? WHERE $rowid = ?";
+         $updatequery = "UPDATE $table_name SET $updatefield = '$newval' WHERE ID = $rowid";
+         echo "<p>update: $updatequery</p>\n";
+         $statement = mysql_prepare( $updatequery );
+      } else {
+         echo "<p><strong>Warning: No HTML codes found in $rowid, $updatefield.</strong></p>\n";
+      }
+   }
+   mysql_free_result( $result );
+}
+
+?>

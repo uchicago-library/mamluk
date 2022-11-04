@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<!-- stdout encoding = iso8859-1 -->
+<html>
+<SCRIPT language=JavaScript>
+
+function MsgOkCancel(URLstring)
+{
+var fRet;
+fRet = confirm('Do you really want to remove this entry?');
+if (fRet)
+	window.location = URLstring;
+}
+
+</SCRIPT>
+<head>
+<title>Mamluk Bibliography</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+body {
+color: #000000; background-color: #ffffff;
+}
+body {
+color: #000000; background-color: #ffffff;
+}
+A:link {
+ color: #990000
+}
+A:visited {
+ color: #990000
+}
+A:active {
+ color: #990000
+}
+body {
+color: #000000; background-color: #ffffff;
+}
+A:link {
+ color: #990000
+}
+A:visited {
+ color: #990000
+}
+A:active {
+ color: #990000
+}
+-->
+</style>
+
+
+	<script language="JavaScript" type="text/JavaScript" src="mamluk-primary_files/main.js"></script>
+	<link href="http://www.lib.uchicago.edu/e/./main.css" rel="stylesheet" type="text/css"><!--[if IE]><link href="http://www.lib.uchicago.edu/e/ie.css" rel="stylesheet" type="text/css"><![endif]-->
+</head>
+<body>
+<div class="top">
+	<div class="title"><!-- BEGIN INSERT TITLE GRAPHIC AND LINK --><a href="http://www.lib.uchicago.edu/e/"><img src="image_files/subtitle.gif" alt="The University of Chicago Library" border="0"></a><!-- END INSERT TITLE GRAPHIC AND LINK --></div>
+	<div class="search">
+		Search
+		<select name="search_target" onChange="switchSearch(this.value)">
+			<option value="catalog">the Library catalog</option>
+			<option value="metalib">Cross-Search</option>
+			<option value="website">the Library website</option>
+		</select>
+		<form id="catalog_form" action="http://libcat.uchicago.edu/ipac20/ipac.jsp" method="get" target="_blank">
+			for <input name="term" type="text"> in
+			<select name="index">
+				<option value=".GK">Keyword anywhere</option>
+				<option value=".TI">Title+Title in Contents (KW)</option>
+				<option value=".AU">Author+Author in Contents (KW)</option>
+				<option value=".SU">Subject keyword</option>
+				<option value="ISBN">ISBN</option>
+			</select>
+			<input value="Go" type="submit">
+		</form>
+		<form id="metalib_form" action="http://128.135.53.184:8331/V" method="get" target="_blank">
+  <input name="func" value="quick-1-check1" type="hidden">
+  <input name="mode" value="simple" type="hidden">
+  <input name="find_request_2" value="" type="hidden">
+  <input name="find_code_2" value="WRD" type="hidden">
+  <input name="find_op_1" value="AND" type="hidden">
+  <input name="find_code_3" value="WRD" type="hidden">
+  <input name="find_request_3" value="" type="hidden">
+			for <input name="find_request_1" value="" type="text"> in
+			<select name="group_number" style="width: 10em;">
+				<option value="000000156">General</option>			
+				<option value="000000157">Science</option>
+				<option value="000000158">Law</option>
+				<option value="000000160">Business</option>
+				<option value="000000159">Library Catalogs</option>
+				<option value="000000161">Encyc/Dictionaries</option>
+			</select>
+			<input value="Go" type="submit">
+		</form>
+		<form method="get" action="http://namazu.lib.uchicago.edu/cgi-bin/namazu.cgi" id="website_form" target="_blank">
+			for <input name="query" type="text"> <input value="Go" type="submit"><br>
+			<input name="sort" value="score" type="hidden">
+			<input name="idxname" value="e" type="hidden">
+			<input name="max" value="20" type="hidden">
+			<input name="result" value="normal" type="hidden">
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="links">
+	<ul>
+		<li><a href="http://www.lib.uchicago.edu/e/catalogs">Catalogs</a>&nbsp;&nbsp;<span class="dot">�</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/dbfinder">Database Finder</a>&nbsp;&nbsp;<span class="dot">�</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/hours">Hours</a>&nbsp;&nbsp;<span class="dot">�</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/myaccounts">My Accounts</a>&nbsp;&nbsp;<span class="dot">�</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/libraries">Libraries</a>&nbsp;&nbsp;<span class="dot">�</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/help">Help</a></li>
+	</ul>
+</div>
+<a href="logout.php">Log out</a>
+</body>
+</html>

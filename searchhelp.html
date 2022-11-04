@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- template: new (PRODUCTION) --><title>Expanded search help</title>
+
+
+
+
+<meta name="DC.title" content="Mamluk Bibliography Online">
+<meta name="DC.date" content="2006-07-31">
+<meta name="DC.identifier" content="http://mamluk.lib.uchicago.edu">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<script language="JavaScript" type="text/JavaScript" src="Mamluk%20Bibliography%20Online_files/main.js"></script>
+<link href="Mamluk%20Bibliography%20Online_files/main.css" rel="stylesheet" type="text/css"><!--[if IE]><link href="http://www.lib.uchicago.edu/e/ie.css" rel="stylesheet" type="text/css"><![endif]--></head><body><div class="top">
+	<div class="title"><!-- BEGIN INSERT TITLE GRAPHIC AND LINK --><a href="http://www.lib.uchicago.edu/e/"><img src="Mamluk%20Bibliography%20Online_files/subtitle.gif" alt="." border="0"></a><!-- END INSERT TITLE GRAPHIC AND LINK --></div>
+	<div class="search">
+		Search
+		<select name="search_target" onchange="switchSearch(this.value)">
+			<option value="catalog">the Library catalog</option>
+			<option value="metalib">Cross-Search</option>
+			<option value="website">the Library website</option>
+		</select>
+		<form id="catalog_form" action="http://libcat.uchicago.edu/ipac20/ipac.jsp" method="get" target="_blank">
+			for <input name="term" type="text"> in
+			<select name="index">
+				<option value=".GK">Keyword anywhere</option>
+				<option value=".TI">Title+Title in Contents (KW)</option>
+				<option value=".AU">Author+Author in Contents (KW)</option>
+				<option value=".SU">Subject keyword</option>
+				<option value="ISBN">ISBN</option>
+			</select>
+			<input value="Go" type="submit">
+		</form>
+		<form id="metalib_form" action="http://128.135.53.184:8331/V" method="get" target="_blank">
+  <input name="func" value="quick-1-check1" type="hidden">
+  <input name="mode" value="simple" type="hidden">
+  <input name="find_request_2" value="" type="hidden">
+  <input name="find_code_2" value="WRD" type="hidden">
+  <input name="find_op_1" value="AND" type="hidden">
+  <input name="find_code_3" value="WRD" type="hidden">
+  <input name="find_request_3" value="" type="hidden">
+			for <input name="find_request_1" value="" type="text"> in
+			<select name="group_number" style="width: 10em;">
+				<option value="000000156">General</option>			
+				<option value="000000157">Science</option>
+				<option value="000000158">Law</option>
+				<option value="000000160">Business</option>
+				<option value="000000159">Library Catalogs</option>
+				<option value="000000161">Encyc/Dictionaries</option>
+			</select>
+			<input value="Go" type="submit">
+		</form>
+		<form method="get" action="http://namazu.lib.uchicago.edu/cgi-bin/namazu.cgi" id="website_form" target="_blank">
+			for <input name="query" type="text"> <input value="Go" type="submit"><br>
+			<input name="sort" value="score" type="hidden">
+			<input name="idxname" value="e" type="hidden">
+			<input name="max" value="20" type="hidden">
+			<input name="result" value="normal" type="hidden">
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="links">
+	<ul>
+		<li><a href="http://www.lib.uchicago.edu/e/catalogs">Catalogs</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/dbfinder">Database Finder</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/hours">Hours</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/myaccounts">My Accounts</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/libraries">Libraries</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;&nbsp;</li>
+		<li><a href="http://www.lib.uchicago.edu/e/help">Help</a></li>
+	</ul>
+</div>
+<div class="crumbs">
+	<!-- "BREADCRUMBS" -->
+	<div><a href="http://mamluk.lib.uchicago.edu"><strong>Mamluk Bibliography Online</strong></a> | <strong>Expanded search help</strong><br></div>
+</div>
+<div class="main">
+  <!-- BEGIN WEB AUTHOR CONTENT CODE -->
+<ul>
+<li>On this page, {} are used to denote the contents of an input box on the 
+	search page. <br>
+	<br>
+  </li>
+<li>A boolean<b> and</b> is implicit between terms in an input box. Do not type 
+	it, or it will be included in the search. Only records which contain all of 
+	the terms in an input box will be found. Typing <b>and</b> will find only 
+	records which contain the word <i>and</i> along with the other terms in your 
+	search. This is an obvious problem, as Arabic names and titles are unlikely 
+	to contain <i>and. And</i> does, however, often appear in records with multiple 
+	editors or multiple translations.<br>
+	<br>
+	<u>Examples:</u> Searching for<b> </b>{<b>al-busiri</b>}<b> </b>will find 
+	records for both <i>al-Busiri, Sharaf al-Din Muhammad ibn Sa`id</i> and <i>al-Busiri, 
+	Shihab al-Din Ahmad ibn Abi Bakr al-Shafi`i</i>. Searching for {<b>al-busiri 
+	sharaf</b>},<b> </b>{<b>sharaf al-busiri</b>}, {<b>sharaf busiri</b>} and 
+	{<b>busiri sharaf</b>} will find records for only the former. While {<b>"busiri 
+	and sharaf"</b>} does not find any records, {<b>busiri and sharaf</b>} 
+	finds several, because of phrases like <i>edited and translated by</i> or 
+	<i>Arabic text with Urdu translation and notes.</i><br>
+	<br>
+  </li>
+<li>Do not use apostrophes, accents, 'ayns, or hamzas in search terms. Do not 
+	use diacritics. <br>
+	Apostrophes and accents are ignored. Thus, the searches {<b>al-`asqalani</b>}, 
+	{<b>al-asqalani</b>}, {<b>asqalani</b>}, and {<b>`asqalani</b>} are treated 
+	identically and yield identical results.<br>
+	<br>
+	Generally, <i>al-</i> (a, l, hyphen) can be omitted (except from phrase searches) 
+	because the search software ignores <i>al-</i> when it is at the <u>beginning</u> 
+	of a word. Thus, the searches {<b>al-rahman</b>} and {<b>rahman</b>} are treated 
+	identically.<br>
+	The software does not, however, ignore <i>al</i> when it stands alone without 
+	a hyphen. In the search {<b>al rahman</b>}, the two words <i>(al &amp; rahman)</i> 
+	are joined by the implicit<b> and</b>, so all records containing the word 
+	<i>al </i>(not <i>al-</i>) and the word <i>rahman</i> will be found. The search 
+	{<b>al-rahman</b>} gets over 500 more hits than the search {<b>al rahman</b>}, 
+	because the latter needs both words to exist, while the former drops the <i>al-.</i><br>
+	<br>
+	In phrase searches, all characters must appear exactly as they appear in records. 
+	For example, {<b>"Ibn al-`Arabi"</b>} will find most records for this individual, 
+	but will not find the few in which his name is presented as <i>Ibn `Arabi.</i> 
+	The search {<b>"ibn arabi"</b>} will retrieve no records. 
+  The best solution is to begin by searching a discrete part of a name--like {<b>arabi</b>}. <br>
+  <br></li>
+<li>You can search an entire phrase by using quotation marks. This allows for 
+	a more focused search. <br>
+	For example, {<b>"ahmad ibn ibrahim"</b>} will find only the few 
+	records containing that exact phrase, while {<b>ahmad ibn ibrahim</b>} will 
+	find any records with all three terms in them somewhere, whether the terms 
+	are adjacent or not.<br>
+	<br>
+	Keep in mind that the terms in quotes must appear in exactly the same order 
+	and form in a record or they will not be found. Searching for {<b>"ahmad 
+	ibn ibrahim"</b>} will not find records for <i> Burhan al-Din Abu Ishaq 
+	Ibrahim ibn Ahmad al-Dimashqi al-Tanukhi.</i><br>
+	<br>
+	A phrase search and another term or terms in the same box are joined by the 
+	implict <b>and</b>, allowing for an even more focused search. For example 
+	{<b>"ahmad ibn ibrahim" rashid</b>} will find only one record, in which <i>Rashid</i> 
+	is part of the editor's name. <br>
+	<br>
+  </li>
+<li>Phrase searches are particularly useful when searching for names or titles 
+	that are quite common. <i>Muhammad, ibn, </i>and<i> Yusuf</i><b> </b>are all 
+	common terms. Searching {<b>muhammad ibn yusuf</b>} will find hundreds of 
+	records, some of which do not contain the name <i>Muhammad ibn Yusuf. Muhammad 
+	ibn</i> might be in the author's name, and <i>Yusuf</i> might be in the name 
+	of the editor or translator. A search for {<b>"muhammad ibn yusuf"</b>} 
+	will yield far fewer records, and the opposite, {<b>"yusuf ibn muhammad"</b>}, 
+	will find entirely different records.<br>
+	<br>
+  </li>
+<li>In the event that you are unsure of a spelling, you may use more than one 
+	input box. For example, in the first box you might type {<b>"muhammad 
+	ibn yusuf"</b>} and in the second you might type {<b>"mohammed ibn 
+	yusuf"</b>}. In general, Arabic names are entered in this bibliography 
+	as they appear in Library of Congress authority files. Thus, <i>Muhammad</i> 
+	will almost always be the correct option, unless an editor or some other modern 
+	person has become established under a different spelling. The use of the <b>or</b> 
+	function is more useful for European authors in the primary bibliography, 
+	as their names might be variously recorded in Latin, German, Italian, Spanish 
+	or other forms (<i>Paul de Guglingen Walther </i>is also known as <i>Paulus 
+	Guglingensis,</i> for example). In such cases, records usually indicate alternate 
+	spellings in a note.<br>
+	<br>
+  </li>
+<li>Wildcards (% and _) may be used freely.<br>
+	<br>
+	<b> %</b> matches any string of one or more characters. The search 
+	{<b>ab%c</b>} will hit on terms like <i>`abdc, `abbasic, </i>and<i> abuc. </i>On 
+	the other hand, {<b>c%ab</b>} will find <i>ckitab, c`arab, cShihab, </i>etc. Finally, 
+	{<b>a%b</b>} finds such terms as <i>Ahdab, Ashab,</i> and <i>`Azab.</i><br>
+	<br>
+	<b>_</b> The underscore matches a single character only. Thus {<b>ab_</b>} 
+	will find <i>abu</i> but not <i>`abbasi</i>. It may be used in any position 
+	in the word.<br>
+	<br>
+  </li>
+<li>For purposes of searching, all characters with accents, umlauts, diacritics 
+	and other additional marks are treated just like the raw character. Thus, 
+	to find a title with <i>Selçuklular</i> or <i>Selçuklularla</i> 
+	in it, simply search {<b>selcuklular*</b>}. To find the German word <i>auszüge,</i> 
+	search {<b>auszuge</b>}. This has several advantages. First, it allows any 
+	user to search any word or name without worrying about entering such characters. 
+	Second, it means that the term will be found wherever it exists, even if in 
+	some cases the accent or other mark is missing. There are, for example, records 
+	in which <i>auszüge</i> lacks the umlaut, and there are instances where 
+	a name might appear under multiple spellings, such as <i>Niccoló, Niccolò 
+	and Niccolo, </i>or<i> Khaldûn </i>and<i> Khaldun.</i> There are also 
+	instances of the spelling <i>Khaldoun</i> in titles, so it would be most effective 
+	to search {<b>khald*</b>}. If you know that such variations exist in the spelling 
+	of a name or word, try a search with wildcards, as it might find more records.<br>
+	<br>
+  </li>
+<li>Modern authors, editors, and translators are not displayed in the primary 
+	bibliography's author browse list. They may be found via the author search.<br>
+	<br>
+  </li>
+<li>The order of words within an input box does not affect the search, except, 
+	obviously, when the words are a phrase in quotation marks.<br>
+	<br>
+  </li>
+<li>Please feel free to email <a href="mailto:mideast-library@uchicago.edu">MEDOC</a> 
+	with comments or questions about the bibliographies or this help page. Please 
+	put Mamluk Bibliography in the subject line of your email. As with any publically 
+	available resource, there are certain to be aspects of this database that 
+	will only become apparent through sustained use. We have tested this resource 
+	carefully, but we could not try every imaginable search. Our primary goal 
+	is the creation of a genuinely useful resource for scholarship, and we welcome 
+	your input. Please be aware that there are features still in development. 
+	Also, we are aware that there are many thousands of sources still not listed 
+	in either of these bibliographies. Our databases are growing every day. We 
+	have decided to make this available at this point not because it is truly 
+	comprehensive, but because it has reached a size at which it may be of use 
+	to others, and because keeping it to ourselves would serve no one. </li>
+</ul>
+
+  <!-- END WEB AUTHOR CONTENT CODE -->
+</div>
+<div class="bottom">
+  <ul>
+    <li><a href="http://www.lib.uchicago.edu/e/suggestions">Suggestions</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;</li>
+    <li><a href="http://www.uchicago.edu/">University Home Page</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;</li>
+    <li><a href="http://www.lib.uchicago.edu/">University Library Home Page</a>&nbsp;&nbsp;<span class="dot">·</span>&nbsp;</li>
+    <li><a href="http://www.lib.uchicago.edu/e/email.php?url=http%3A%2F%2Fwww%2Elib%2Euchicago%2Eedu%2Fe%2Fsu%2Fmideast%2Fmamluk%2Fsearchhelp%2Ehtml&amp;whichlib=.&amp;pagetitle=Expanded%20search%20help&amp;pathto=su%2Fmideast%2Fmamluk&amp;nodetitle=Mamluk%20Bibliography%20Online&amp;maintainer=mideast%2Dlibrary">Questions and comments about this page?</a></li>
+  </ul>
+</div>
+<div class="footer">
+  <p>
+    The University of Chicago Library<br>
+1100 East 57th Street Chicago Illinois 60637<br>
+    <a href="http://www.lib.uchicago.edu/e/staff">Phone Numbers</a>
+  </p>
+  <p>
+    Page last generated on: 31 July 2006 at 10:58 PM CDT
+  </p>
+  <p>© The University of Chicago Library</p>
+</div>
+
+
+</body></html>
