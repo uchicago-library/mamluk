@@ -34,18 +34,18 @@ Mamluk Bibliography Online</a></strong><br>
 <?php
 	$table_name = "bib";
 //	$searchArts = "Islam";
-//	$searchArts = mysql_real_escape_string($searchArts);
+//	$searchArts = mysqli_real_escape_string($link, $searchArts);
 //	echo "search arts = " . $searchArts . "<p></p>";
 
 //$item = "Zak's Laptop";
-//$item = mysql_escape_string($item);
+//$item = mysqli_escape_string($link, $item);
 //printf("Escaped string: %s\n", $item);
 	
 
 function item_display($line)
 {
-	$str_form = trim($line[1]);    
-    $str_authrole = ucfirst(trim($line[6]));
+	$str_form = trim($line[1] ?? '');    
+    $str_authrole = ucfirst(trim($line[6] ?? ''));
     
 // 3,4,5,7,8,10,11,12,13,14,15,16,17,18,19,20,21,29    
     $line_dot = $line;
@@ -55,33 +55,33 @@ function item_display($line)
 	{	
 	    if ($line[$i] != "")
 		{
-	    	$line_dot[$i] = trim($line[$i]) . '. ';
-	    	$line_comma[$i] = trim($line[$i]) . ', ';
+	    	$line_dot[$i] = trim($line[$i] ?? '') . '. ';
+	    	$line_comma[$i] = trim($line[$i] ?? '') . ', ';
 	    
 	    }	    
     }
     
     switch ($str_form) {
 case "Book long":
-    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" ' . trim($str_authrole) . ' ' . $line_dot[5] . ' In <I>' . trim($line[7]) . '</I>. ' . $line_dot[13] . ' ' . trim($line[15]) . ' ' . $line_dot[14] . ' ' . $line_dot[21] . ' ' . trim($line[16]) . ': ' . $line_comma[17] . ' ' . $line_dot[18];
+    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" ' . trim($str_authrole ?? '') . ' ' . $line_dot[5] . ' In <I>' . trim($line[7] ?? '') . '</I>. ' . $line_dot[13] . ' ' . trim($line[15] ?? '') . ' ' . $line_dot[14] . ' ' . $line_dot[21] . ' ' . trim($line[16] ?? '') . ': ' . $line_comma[17] . ' ' . $line_dot[18];
     break;
 case "Book short":
     $str_display = $line_dot[29];
     break;
 case "Book Review":
-    $str_display = $line_dot[3] . ' ' . $line_dot[4] . ' <I>' . trim($line[8]) . '</I> ' . $line_comma[19] . ' ' . trim($line[20]) . ' (' . trim($line[18]) . '): ' . $line_dot[21];
+    $str_display = $line_dot[3] . ' ' . $line_dot[4] . ' <I>' . trim($line[8] ?? '') . '</I> ' . $line_comma[19] . ' ' . trim($line[20] ?? '') . ' (' . trim($line[18] ?? '') . '): ' . $line_dot[21];
     break;
 case "Dissertation":
-    $str_display = $line_dot[3] . ' <I>"' . trim($line[7]) . '."</I> ' . trim($str_authrole) . " " . $line_dot[5] . ' ' . $line_dot[21] . ' ' . $line_comma[16] . ' ' . $line_dot[18];
+    $str_display = $line_dot[3] . ' <I>"' . trim($line[7] ?? '') . '."</I> ' . trim($str_authrole ?? '') . " " . $line_dot[5] . ' ' . $line_dot[21] . ' ' . $line_comma[16] . ' ' . $line_dot[18];
     break;
 case "Journal":
-    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" <I>' . trim($line[8]) . '</I> ' . $line_comma[19] . ' ' . trim($line[20]) . ' (' . trim($line[18]) . '): ' . $line_dot[21];
+    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" <I>' . trim($line[8] ?? '') . '</I> ' . $line_comma[19] . ' ' . trim($line[20] ?? '') . ' (' . trim($line[18] ?? '') . '): ' . $line_dot[21];
     break;
 case "Monographic long form":
-    $str_display = $line_dot[3] . ' <I>' . trim($line[7]) . '</I>. ' . $line_dot[13] . ' ' . trim($str_authrole) . " " . $line_dot[5] . ' ' . $line_dot[21] . ' ' . trim($line[16]) . ': ' . $line_comma[17] . ' ' . $line_dot[18];
+    $str_display = $line_dot[3] . ' <I>' . trim($line[7] ?? '') . '</I>. ' . $line_dot[13] . ' ' . trim($str_authrole ?? '') . " " . $line_dot[5] . ' ' . $line_dot[21] . ' ' . trim($line[16] ?? '') . ': ' . $line_comma[17] . ' ' . $line_dot[18];
     break;
 case "Conference":
-    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" In <I>' . trim($line[7]) . '</I>, '. $line_comma[10] . ' ' . trim($str_authrole) . " " . $line_comma[5] . ' ' . $line_dot[21] . ' ' . $line_comma[12] . ' ' . $line_dot[11] . ' ' . trim($line[16]) . ': ' . $line_comma[17] . ' ' . $line_dot[18];
+    $str_display = $line_dot[3] . ' "' . $line_dot[4] . '" In <I>' . trim($line[7] ?? '') . '</I>, '. $line_comma[10] . ' ' . trim($str_authrole ?? '') . " " . $line_comma[5] . ' ' . $line_dot[21] . ' ' . $line_comma[12] . ' ' . $line_dot[11] . ' ' . trim($line[16] ?? '') . ': ' . $line_comma[17] . ' ' . $line_dot[18];
     break;
 	}
 	
@@ -217,23 +217,21 @@ else
 
 <?php
 
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 
-mysql_query("SET NAMES 'utf8'");
+mysqli_query($link, "SET NAMES 'utf8'");
 
 
-
-mysql_select_db($db_name) or die('Could not select database');
 
 	$query = "SELECT Field1 FROM subjectlist";	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		if ($line['Field1'] == $searchsubject)
 			echo "<option selected='selected'>";
 		else
@@ -257,13 +255,13 @@ mysql_select_db($db_name) or die('Could not select database');
 	"UNION SELECT mid(language, INSTR(language,'/') + 1, length(language)) AS  language3 FROM " . $table_name . " where language like '%/%'";	
 	
 //	$query = "SELECT distinct language as l1 from bib where language not like '%/%'";
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		if ($line['l1'] == $searchlanguage)
 			echo "<option selected='selected'>";
 		else
@@ -338,7 +336,7 @@ function create_author_query($val, $link)
 
 	for ($i = 0; $i < $list_num; $i++)
 	{
-		$list_out[$i] = mysql_real_escape_string($list_out[$i], $link);
+		$list_out[$i] = mysqli_real_escape_string($link, $list_out[$i]);
 		add_wildcard($list_out[$i]);
 	}
 	$str1 = and_clause('ORIGAUTHOR', $list_out, $list_num);
@@ -371,7 +369,7 @@ function create_title_query($val, $link)
 
 	for ($i = 0; $i < $list_num; $i++)
 	{
-		$list_out[$i] = mysql_real_escape_string($list_out[$i], $link);
+		$list_out[$i] = mysqli_real_escape_string($link, $list_out[$i]);
 		add_wildcard($list_out[$i]);
 	}
 	
@@ -401,7 +399,7 @@ $guard = $guard + wildcard_process($searchlanguage);
 //	exit("");
 
 
-//$searchauthor0 = mysql_escape_string($searchauthor0);
+//$searchauthor0 = mysqli_escape_string($link, $searchauthor0);
 
 //add_wildcard($searchauthor0);
 //add_wildcard($searchauthor1);
@@ -463,7 +461,7 @@ if ($searchtitle2 != '')
 	$title_num = $title_num + 1;
 }
 
-$searchsubject = mysql_real_escape_string($searchsubject, $link);	
+$searchsubject = mysqli_real_escape_string($link, $searchsubject);	
 if ($searchsubject != '')
 	$query_subject = " (SUBJECT like '%" . $searchsubject . "%')";
 else
@@ -471,7 +469,7 @@ else
 
 //echo "searchsubject = " . $searchsubject;
 
-$searchlanguage = mysql_real_escape_string($searchlanguage, $link);	
+$searchlanguage = mysqli_real_escape_string($link, $searchlanguage);	
 if ($searchlanguage != '')
 	$query_language = " (LANGUAGE like '%" . $searchlanguage . "%')";
 else
@@ -540,12 +538,10 @@ case 7:
 
 //echo '<p> Connecting to M SQL database ... <p>';
 // Connecting, selecting database
-//$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-//    or die('Could not connect: ' . mysql_error());
+//$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+//    or die('Could not connect: ' . mysqli_error($link));
 
 //echo 'Connected successfully';
-//mysql_select_db($db_name) or die('Could not select database');
-
 
 
 // Performing SQL query
@@ -598,13 +594,13 @@ $query_count = $query_count_pre . $query;
 $query = $query_pre . $query . " ORDER BY ID LIMIT " . $limit . " OFFSET " . ($start - 1);
 
 //echo $query . "\n";
-$result_count = mysql_query($query_count) or die('Query failed: ' . mysql_error());
-while ($line = mysql_fetch_row($result_count)) {
+$result_count = mysqli_query($link, $query_count) or die('Query failed: ' . mysqli_error($link));
+while ($line = mysqli_fetch_row($result_count)) {
 	$rec_count = $line[0];
 }
-//$rec_count = mysql_affected_rows();
+//$rec_count = mysqli_affected_rows($link);
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 echo "<p>Records found: " . $rec_count . "<p>";
 echo "<br>";
@@ -645,23 +641,23 @@ echo "</p><p>&nbsp;</p><p>&nbsp;</p>";
 
 echo "\n<table ALIGN='LEFT' border=1>\n";
 
-//if (!mysql_data_seek($result, $start - 1)) {
-//	echo "Cannot seek to row $start: " . mysql_error() . "\n";	
+//if (!mysqli_data_seek($result, $start - 1)) {
+//	echo "Cannot seek to row $start: " . mysqli_error($link) . "\n";	
 //}
 
 $i = 1;
 	
-//while (($line = mysql_fetch_row($result)) && ($i <= $next)) {
-while ($line = mysql_fetch_row($result)) {
+//while (($line = mysqli_fetch_row($result)) && ($i <= $next)) {
+while ($line = mysqli_fetch_row($result)) {
     
-    $str_auth = trim($line[3]);    
-    $str_form = trim($line[1]);    
-	$str_notes = trim($line[25]);
-	$str_title = trim($line[9]);
-	$str_subject = trim($line[28]);
-	$str_seriestitle = trim($line[22]);
-	$str_seriesvol =  trim($line[23]);
-	$str_other =  trim($line[29]);
+    $str_auth = trim($line[3] ?? '');    
+    $str_form = trim($line[1] ?? '');    
+	$str_notes = trim($line[25] ?? '');
+	$str_title = trim($line[9] ?? '');
+	$str_subject = trim($line[28] ?? '');
+	$str_seriestitle = trim($line[22] ?? '');
+	$str_seriesvol =  trim($line[23] ?? '');
+	$str_other =  trim($line[29] ?? '');
 	 	
 	$full_sub_list = array(0 => '');
 	$list_count = 0;
@@ -687,8 +683,8 @@ while ($line = mysql_fetch_row($result)) {
 	}
 	
 //    $str_query = "SELECT * form bib WHERE ORIGAUTHOR = '" . $str_auth . "'";
-//    $result1 = mysql_query($query) or die('Query failed: ' . mysql_error());
-//    $line1 = mysql_fetch_row($result1);
+//    $result1 = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
+//    $line1 = mysqli_fetch_row($result1);
 //    echo $line1[3] . " --- " . $line1[4] . "<p></p>";
     
     echo "<tr>\n";
@@ -795,10 +791,10 @@ if ($stop < $rec_count)
 echo "</p>";
 
 // Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-mysql_close($link);
+mysqli_close($link);
 
 require("footer.htm");
 ?> 

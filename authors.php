@@ -47,30 +47,28 @@ else
 
 
 
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 
-mysql_query("SET NAMES 'utf8'");
-
-mysql_select_db($db_name) or die('Could not select database');
+mysqli_query($link, "SET NAMES 'utf8'");
 
 
 	$query = "SELECT distinct " . $fld_name . " FROM " . $table_name;	
-	$query = "SELECT distinct " . $fld_name . ", count(*) as count FROM " . $table_name . " where (" . $fld_name . " <> '') group by " . $fld_name . " order by id";	
+	$query = "SELECT distinct " . $fld_name . ", count(" . $fld_name . ") as count FROM " . $table_name . " where (" . $fld_name . " <> '') group by " . $fld_name;	
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 	echo "<ul>\n";
 	$num = 0;
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$str = $line[$fld_name];
 		author_wildcard_process($str);
 		
 //		wildcard_process($str);
 //		$query_count = "SELECT count(*) as count FROM bib WHERE (ORIGAUTHOR LIKE '%" . $str . "%')";
 //		echo $query_count . "<p></p>";	
-//		$result_count = mysql_query($query_count) or die('Query failed: ' . mysql_error());
-//		while ($row = mysql_fetch_assoc($result_count)) {
+//		$result_count = mysqli_query($link, $query_count) or die('Query failed: ' . mysqli_error($link));
+//		while ($row = mysqli_fetch_assoc($result_count)) {
 //			$count = $row['count'];		
 //		}
 		$namelist1[$num]=$str;
@@ -138,7 +136,12 @@ mysql_select_db($db_name) or die('Could not select database');
 
 //		echo " before str" . $i . ": " . $namelist1[$i] . "<p>";
 		$strtmp = str_normalize($namelist1[$i]);
-		$namelist1[$i] = implode("", $strtmp);			
+
+        if (gettype($strtmp) == 'string') {
+		    $namelist1[$i] = $strtmp;			
+        } else if (gettype($strtmp) == 'array') {
+		    $namelist1[$i] = implode("", $strtmp);			
+        }
 //		echo "after str" . $i . ": " . $namelist1[$i] . "<p>";
 	}
 
@@ -165,10 +168,10 @@ mysql_select_db($db_name) or die('Could not select database');
 //	echo "</body>\n";	
 
 	// Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-//mysql_close($link);
+//mysqli_close($link);
 
 require("footer.htm"); 
 ?>

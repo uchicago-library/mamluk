@@ -1,36 +1,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><!-- template: new (PRODUCTION) --><title>Mamluk Bibliography Database Editor</title>
-<link href="Mamluk%20Bibliography%20Online_files/main.css" rel="stylesheet" type="text/css"><!--[if IE]><link href="http://www.lib.uchicago.edu/e/ie.css" rel="stylesheet" type="text/css"><![endif]--></head><body><div class="top">
+<link href="Mamluk%20Bibliography%20Online_files/main.css" rel="stylesheet" type="text/css"><!--[if IE]><link href="http://www.lib.uchicago.edu/e/ie.css" rel="stylesheet" type="text/css"><![endif]--><meta charset="utf-8"></head><body><div class="top">
 
 <?php
 // Connects to your Database
 require("funcs.php");
 // Connects to your Database
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
-mysql_query("SET NAMES 'utf8'");
-mysql_select_db($db_name, $link) or die('Could not select database');
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
+mysqli_query($link, "SET NAMES 'utf8'");
 
 //checks cookies to make sure they are logged in
 if(isset($_COOKIE['ID_my_site']))
 {
 $username = $_COOKIE['ID_my_site'];
 $pass = $_COOKIE['Key_my_site'];
-$check = mysql_query("SELECT * FROM member WHERE username = '$username'")or die(mysql_error());
-while($info = mysql_fetch_array( $check ))
+$check = mysqli_query($link, "SELECT * FROM member WHERE username = '$username'")or die(mysqli_error($link));
+while($info = mysqli_fetch_array( $check ))
 {
 
 //if the cookie has the wrong password, they are taken to the login page
 if ($pass != $info['password'])
 { 
-	mysql_close($link);
+	mysqli_close($link);
 	header("Location: login.php");
 }
 
 //otherwise they are shown the admin area
 else
 {
-	mysql_close($link);
+	mysqli_close($link);
 }
 }
 }
@@ -38,7 +37,7 @@ else
 
 //if the cookie does not exist, they are taken to the login screen
 {
-mysql_close($link);	
+mysqli_close($link);	
 header("Location: login.php");
 }
 

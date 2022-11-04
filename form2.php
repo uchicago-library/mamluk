@@ -63,22 +63,20 @@ $sub_table_name = "subject_list2";
 
 require("funcs.php");
 
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 
-mysql_query("SET NAMES 'utf8'");
-
-mysql_select_db($db_name) or die('Could not select database');
+mysqli_query($link, "SET NAMES 'utf8'");
 
 	$query = "SELECT Field1 FROM " . $sub_table_name;
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		echo "<option>";
 	   	echo $line['Field1'];
 		echo "</option>";
@@ -98,13 +96,13 @@ mysql_select_db($db_name) or die('Could not select database');
 	"UNION SELECT mid(language, 1, INSTR(language,'/') - 1) AS  language2 FROM " . $table_name . " where language like '%/%'" . 
 	"UNION SELECT mid(language, INSTR(language,'/') + 1, length(language)) AS  language3 FROM " . $table_name . " where language like '%/%'";	
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		echo "<option>";
 	   	echo $line['l1'];
 		echo "</option>";
@@ -112,10 +110,10 @@ mysql_select_db($db_name) or die('Could not select database');
 	
 	
 	// Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-mysql_close($link);
+mysqli_close($link);
 ?>
 </select></td>
 </tr>

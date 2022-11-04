@@ -9,9 +9,15 @@ $db_name = fgets($file);
 
 fclose($file);
 
+# see: https://stackoverflow.com/questions/14629636/mysql-field-name-to-the-new-mysqli
+function mysqli_field_name($result, $field_offset) {
+    $properties = mysqli_fetch_field_direct($result, $field_offset);
+    return is_object($properties) ? $properties->name : null;
+}
+
 function uniord($ch, &$bytenum) {
 
-    $n = ord($ch{0});
+    $n = ord($ch[0]);
     $bytenum = 1;
 
     if ($n < 128) {
@@ -31,7 +37,7 @@ function uniord($ch, &$bytenum) {
 
     foreach ($arr as $key => $val) {
         if ($n >= $val) { // add byte to the 'char' array
-            $char[] = ord($ch{$key}) - 128;
+            $char[] = ord($ch[$key]) - 128;
             $range  = $val;
             $bytenum = $bytenum + 1;
         } else {
@@ -301,7 +307,7 @@ function char_normalize($chr_src, &$bytenum)
 			$chr_dst = 'L';				
 			break;			
 		default:
-			$chr_dst = $chr_src{0};
+			$chr_dst = $chr_src[0];
 			break;
 	}
 	return $chr_dst;
@@ -309,6 +315,8 @@ function char_normalize($chr_src, &$bytenum)
 
 function str_normalize($str_src)
 {
+    error_log($str_src);
+
 	$bytetotal = 0;	
 	$bytenum = 0;
 	$str_tmp = "";
@@ -317,16 +325,20 @@ function str_normalize($str_src)
 	$j = 0;
 	$i = 0;
 	$str_dst = "";
-	
-	while ($i < strlen($str_src))
-	{			
-		$c = char_normalize($str_tmp, $bytenum);
-		$str_dst{$j} = $c;
-		$j = $j + 1;				
-		
-		$i = $i + $bytenum;		
-		$str_tmp = substr($str_src, $i);		
-	}
+
+    if ($str_src != '') {	
+    	while ($i < strlen($str_src))
+    	{			
+    		$c = char_normalize($str_tmp, $bytenum);
+            if ($c != '') {
+    		    $str_dst[$j] = $c;
+            }
+    		$j = $j + 1;				
+    		
+    		$i = $i + $bytenum;		
+    		$str_tmp = substr($str_src, $i);		
+    	}
+    }
 	
 	return $str_dst;
 } 
@@ -544,8 +556,8 @@ function session_started(){
 //$_SESSION['mysql_password'] = "redrose";
 //$_SESSION['db_name'] = "mamluk1";
 //    
-//$_SESSION['link'] = mysql_connect($_SESSION['mysql_server'], $_SESSION['mysql_user'], $_SESSION['mysql_password'])
-//    or die('Could not connect: ' . mysql_error());
+//$_SESSION['link'] = mysqli_connect($_SESSION['mysql_server'], $_SESSION['mysql_user'], $_SESSION['mysql_password'], $_SESSION['db_name'])
+//    or die('Could not connect: ' . mysqli_error($_SESSION['link']));
 
 
 
