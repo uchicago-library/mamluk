@@ -315,8 +315,6 @@ function char_normalize($chr_src, &$bytenum)
 
 function str_normalize($str_src)
 {
-    error_log($str_src);
-
 	$bytetotal = 0;	
 	$bytenum = 0;
 	$str_tmp = "";
@@ -326,20 +324,20 @@ function str_normalize($str_src)
 	$i = 0;
 	$str_dst = "";
 
-    if ($str_src != '') {	
-    	while ($i < strlen($str_src))
-    	{			
-    		$c = char_normalize($str_tmp, $bytenum);
-            if ($c != '') {
-    		    $str_dst[$j] = $c;
-            }
-    		$j = $j + 1;				
-    		
-    		$i = $i + $bytenum;		
-    		$str_tmp = substr($str_src, $i);		
-    	}
-    }
-	
+	while ($i < strlen($str_src))
+	{			
+		$c = char_normalize($str_tmp, $bytenum);
+
+		// $str_dst{$j} = $c;
+		if ($c != '') {
+		    $str_dst = $str_dst . $c;
+		}
+		$j = $j + 1;				
+		
+		$i = $i + $bytenum;		
+		$str_tmp = substr($str_src, $i);		
+	}
+
 	return $str_dst;
 } 
 
