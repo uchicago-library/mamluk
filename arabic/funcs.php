@@ -196,8 +196,8 @@ function session_started(){
 //$_SESSION['mysql_password'] = "redrose";
 //$_SESSION['db_name'] = "mamluk1";
 //    
-//$_SESSION['link'] = mysql_connect($_SESSION['mysql_server'], $_SESSION['mysql_user'], $_SESSION['mysql_password'])
-//    or die('Could not connect: ' . mysql_error());
+//$_SESSION['link'] = mysqli_connect($_SESSION['mysql_server'], $_SESSION['mysql_user'], $_SESSION['mysql_password'], $_SESSION['db_name'])
+//    or die('Could not connect: ' . mysqli_error($link));
 
 
 

@@ -25,11 +25,11 @@
 <?php
 	$table_name = "main_table";
 //	$searchArts = "Islam";
-//	$searchArts = mysql_real_escape_string($searchArts);
+//	$searchArts = mysqli_real_escape_string($link, $searchArts);
 //	echo "search arts = " . $searchArts . "<p></p>";
 
 //$item = "Zak's Laptop";
-//$item = mysql_escape_string($item);
+//$item = mysqli_escape_string($link, $item);
 //printf("Escaped string: %s\n", $item);
 	
 function get_author_string($line)
@@ -293,14 +293,12 @@ else
 </tr>
 <?php
 
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 
-mysql_query("SET NAMES 'utf8'");
+mysqli_query($link, "SET NAMES 'utf8'");
 
 
-
-mysql_select_db($db_name) or die('Could not select database');
 
 ?>
 
@@ -313,13 +311,13 @@ mysql_select_db($db_name) or die('Could not select database');
 
 	$query = "SELECT distinct Genre as l1 from " . $table_name . " where Genre <> ''";	
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		if ($line['l1'] == $searchtype)
 			echo "<option selected='selected'>";
 		else
@@ -389,7 +387,7 @@ function create_author_query($val, $link)
 
 	for ($i = 0; $i < $list_num; $i++)
 	{
-		$list_out[$i] = mysql_real_escape_string($list_out[$i], $link);
+		$list_out[$i] = mysqli_real_escape_string($link, $list_out[$i]);
 		add_wildcard($list_out[$i]);
 	}
 	$str1 = and_clause('Author_name', $list_out, $list_num);
@@ -421,7 +419,7 @@ function create_title_query($val, $link)
 
 	for ($i = 0; $i < $list_num; $i++)
 	{
-		$list_out[$i] = mysql_real_escape_string($list_out[$i], $link);
+		$list_out[$i] = mysqli_real_escape_string($link, $list_out[$i]);
 		add_wildcard($list_out[$i]);
 	}
 	
@@ -450,7 +448,7 @@ $guard = $guard + wildcard_process($searchtype);
 //	exit("");
 
 
-//$searchauthor0 = mysql_escape_string($searchauthor0);
+//$searchauthor0 = mysqli_escape_string($link, $searchauthor0);
 
 //add_wildcard($searchauthor0);
 //add_wildcard($searchauthor1);
@@ -512,20 +510,20 @@ if ($searchtitle2 != '')
 	$title_num = $title_num + 1;
 }
 
-$searchtype = mysql_real_escape_string($searchtype, $link);
+$searchtype = mysqli_real_escape_string($link, $searchtype);
 
 if ($searchtype != '')
 	$query_type = " (Genre like '%" . $searchtype . "%')";
 else
 	$query_type = "";
 
-$searchtranslator = mysql_real_escape_string($searchtranslator, $link);	
+$searchtranslator = mysqli_real_escape_string($link, $searchtranslator);	
 if ($searchtranslator != '')
 	$query_translator = " ((Translator_name like '%" . $searchtranslator . "%') or (Translator_translit like '%" . $searchtranslator . "%'))";
 else
 	$query_translator = "";
 
-$searcheditor = mysql_real_escape_string($searcheditor, $link);	
+$searcheditor = mysqli_real_escape_string($link, $searcheditor);	
 if ($searcheditor != '')
 	$query_editor = " ((Editor_name like '%" . $searcheditor . "%') or (Editor_translit like '%" . $searcheditor . "%'))";
 else
@@ -594,12 +592,10 @@ case 7:
 
 //echo '<p> Connecting to M SQL database ... <p>';
 // Connecting, selecting database
-//$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-//    or die('Could not connect: ' . mysql_error());
+//$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+//    or die('Could not connect: ' . mysqli_error($link));
 
 //echo 'Connected successfully';
-//mysql_select_db($db_name) or die('Could not select database');
-
 
 
 // Performing SQL query
@@ -668,13 +664,13 @@ $query_count = $query_count_pre . $query;
 $query = $query_pre . $query . " ORDER BY ID LIMIT " . $limit . " OFFSET " . ($start - 1);
 
 //echo $query . "\n";
-$result_count = mysql_query($query_count) or die('Query failed: ' . mysql_error());
-while ($line = mysql_fetch_row($result_count)) {
+$result_count = mysqli_query($link, $query_count) or die('Query failed: ' . mysqli_error($link));
+while ($line = mysqli_fetch_row($result_count)) {
 	$rec_count = $line[0];
 }
-//$rec_count = mysql_affected_rows();
+//$rec_count = mysqli_affected_rows($link);
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 echo "<p>Records found: " . $rec_count . "<p>";
 
@@ -712,14 +708,14 @@ echo "</p><p>&nbsp;</p><p>&nbsp;</p>";
 
 echo "\n<table ALIGN='LEFT' border=1>\n";
 
-//if (!mysql_data_seek($result, $start - 1)) {
-//	echo "Cannot seek to row $start: " . mysql_error() . "\n";	
+//if (!mysqli_data_seek($result, $start - 1)) {
+//	echo "Cannot seek to row $start: " . mysqli_error($link) . "\n";	
 //}
 
 $i = 1;
 	
-//while (($line = mysql_fetch_row($result)) && ($i <= $next)) {
-while ($line = mysql_fetch_row($result)) {
+//while (($line = mysqli_fetch_row($result)) && ($i <= $next)) {
+while ($line = mysqli_fetch_row($result)) {
     
     $str_series = trim($line[22]);    
 	$str_form = trim($line[28]);    
@@ -755,8 +751,8 @@ while ($line = mysql_fetch_row($result)) {
 //	}
 	
 //    $str_query = "SELECT * form bib WHERE ORIGAUTHOR = '" . $str_auth . "'";
-//    $result1 = mysql_query($query) or die('Query failed: ' . mysql_error());
-//    $line1 = mysql_fetch_row($result1);
+//    $result1 = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
+//    $line1 = mysqli_fetch_row($result1);
 //    echo $line1[3] . " --- " . $line1[4] . "<p></p>";
     
     echo "<tr>\n";
@@ -834,10 +830,10 @@ if ($stop < $rec_count)
 echo "</p>";
 
 // Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-mysql_close($link);
+mysqli_close($link);
 
 require("footer.htm");
 ?> 

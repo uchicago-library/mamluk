@@ -3,20 +3,19 @@
 phpinfo();
 echo '<p> Connecting to M SQL database ... <p>';
 // Connecting, selecting database
-$link = mysql_connect("localhost", "root", "redrose")
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect("localhost", "root", "redrose", "mamluk2")
+    or die('Could not connect: ' . mysqli_error($link));
 
 echo 'Connected successfully';
-mysql_select_db('mamluk2') or die('Could not select database');
-mysql_get_server_info($link);
+mysqli_get_server_info($link);
 
 // Performing SQL query
 $query = 'SELECT * FROM bib';
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 // Printing results in HTML
 echo "<table>\n";
-while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     echo "\t<tr>\n";
     foreach ($line as $col_value) {
         echo "\t\t<td>$col_value</td>\n";
@@ -26,10 +25,10 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 echo "</table>\n";
 
 // Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-mysql_close($link);
+mysqli_close($link);
 
 ?> 
 </html>
