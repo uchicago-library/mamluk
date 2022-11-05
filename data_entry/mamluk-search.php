@@ -18,7 +18,7 @@ else
 
 //if (!session_is_registered("counted")){
 if (!isset($_SESSION['counted'])){
-    mysql_query("UPDATE simplecount SET count=(count + 1) WHERE count_id=1");
+    mysql_query($link, "UPDATE simplecount SET count=(count + 1) WHERE count_id=1");
 //session_register("counted");
 $_SESSION['counted'] = 1;
 } 

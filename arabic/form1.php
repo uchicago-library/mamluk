@@ -63,12 +63,10 @@
 require("funcs.php");
 $table_name = "main_table";
 
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 
-mysql_query("SET NAMES 'utf8'");
-
-mysql_select_db($db_name) or die('Could not select database');
+mysqli_query($link, "SET NAMES 'utf8'");
 
 ?>
 
@@ -80,23 +78,23 @@ mysql_select_db($db_name) or die('Could not select database');
 //	$query = "SELECT distinct Citation_Type as l1 from " . $table_name . " where Citation_Type <> ''";	
 	$query = "SELECT distinct Genre as l1 from " . $table_name . " where Genre <> ''";	
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 	echo "<option>";
    	echo "";
 	echo "</option>";
 	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		echo "<option>";
 	   	echo $line['l1'];
 		echo "</option>";
 	}	
 	
 	// Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-//mysql_close($link);
+//mysqli_close($link);
 ?>
 </select></td>
 </tr>

@@ -21,13 +21,11 @@ else
 	require("form1.php"); 
 }	
 
-//$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-//    or die('Could not connect: ' . mysql_error());
+//$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+//    or die('Could not connect: ' . mysqli_error($link));
 //
-mysql_query("SET NAMES 'utf8'");
+mysqli_query($link, "SET NAMES 'utf8'");
 //
-//mysql_select_db($db_name) or die('Could not select database');
-
 //$expanded = 0;
 $expnode = '';
 
@@ -37,7 +35,7 @@ if (isset($_GET['expnode']))
 	$expnode = $_GET['expnode'];
 	$expnode = trim($expnode);
 echo $expnode . "<p></p>";	
-	$expnode = mysql_real_escape_string($expnode);
+	$expnode = mysqli_real_escape_string($link, $expnode);
 echo $expnode . "<p></p>";
 }
 
@@ -48,7 +46,7 @@ $childlist_count = 0;
 function creat_full_subject_list($result, &$list_count, &$full_sub_list, $expnode)
 {
 	$i = 0;
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$str = $line['subject'];
 		
 		$k = 0;
@@ -88,7 +86,7 @@ $i = 0;
 if ($expnode != '')
 {
 	$query1 = "SELECT subject FROM " . $table_name . " WHERE ( subject like '%" . $expnode . "--%') order by subject";	
-	$result1 = mysql_query($query1) or die('Query failed: ' . mysql_error());
+	$result1 = mysqli_query($link, $query1) or die('Query failed: ' . mysqli_error($link));
 	creat_full_subject_list($result1, $list_count, $full_sub_list, $expnode);
 //	echo $query1 . "<p></p>";
 //	echo $childlist_count . "<p></p>";
@@ -140,22 +138,22 @@ if ($expnode != '')
 //	echo "<body>\n";	
 	$query = "SELECT distinct Field1 FROM " . $sub_table_name;	
 	
-	$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+	$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 	echo "<ul>\n";
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$str = $line['Field1'];
 		wildcard_process($str);
 		$query_count = "SELECT count(*) as count FROM " . $table_name . " WHERE (subject LIKE '%" . $str . "%')";
 		$query_exp_count = "SELECT count(*) as count FROM " . $table_name . " WHERE ( subject like '%" . $str . "--%')";
 //		echo $query_count . "<p></p>";	
-		$result_count = mysql_query($query_count) or die('Query failed: ' . mysql_error());
-		$result_exp_count = mysql_query($query_exp_count) or die('Query failed: ' . mysql_error());
+		$result_count = mysqli_query($link, $query_count) or die('Query failed: ' . mysqli_error($link));
+		$result_exp_count = mysqli_query($link, $query_exp_count) or die('Query failed: ' . mysqli_error($link));
 
-		while ($row = mysql_fetch_assoc($result_count)) {
+		while ($row = mysqli_fetch_assoc($result_count)) {
 			$count = $row['count'];		
 		}
-		while ($row_exp = mysql_fetch_assoc($result_exp_count)) {
+		while ($row_exp = mysqli_fetch_assoc($result_exp_count)) {
 			$count_exp = $row_exp['count'];		
 		}
 		
@@ -190,9 +188,9 @@ if ($expnode != '')
 					wildcard_process($child_list[$k]);	
 					
 					$query_count = "SELECT count(*) as count FROM " . $table_name . " WHERE (subject LIKE '%" . $str . "--" . $child_list[$k] . "%')";
-					$result_count = mysql_query($query_count) or die('Query failed: ' . mysql_error());
+					$result_count = mysqli_query($link, $query_count) or die('Query failed: ' . mysqli_error($link));
 			
-					while ($row = mysql_fetch_assoc($result_count)) {
+					while ($row = mysqli_fetch_assoc($result_count)) {
 						$count = $row['count'];		
 					}
 					if ($id == 2)
@@ -218,10 +216,10 @@ if ($expnode != '')
 //	echo "</body>\n";	
 
 	// Free resultset
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-//mysql_close($link);
+//mysqli_close($link);
 
 require("footer.htm"); 
 ?>

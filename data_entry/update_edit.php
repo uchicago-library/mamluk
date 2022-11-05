@@ -14,15 +14,13 @@ bl.write();
 <br>
 <br>
 <?php
-	$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-	    or die('Could not connect: ' . mysql_error());
+	$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+	    or die('Could not connect: ' . mysqli_error($link));
 	
-	mysql_query("SET NAMES 'utf8'");
+	mysqli_query($link, "SET NAMES 'utf8'");
 	
 	
 	
-	mysql_select_db($db_name, $link) or die('Could not select database');
-
 //require 'db_connect.php';
 //	connect();
 //	$table_name = "bib";
@@ -68,18 +66,18 @@ else
 
 	
 $query = "SELECT * from " . $table_name . " where id = " . $id;		
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 
 
 for ($i = 1; $i < $fldnum; $i++)
 {
 	if (isset($_GET['id']))  
 	{
-		$newline[$i] = trim($_GET[mysql_field_name($result, $i)]);	
+		$newline[$i] = trim($_GET[mysqli_field_name($result, $i)]);	
 	}
 	elseif (isset($_POST['id']))
 	{
-		$newline[$i] = trim($_POST[mysql_field_name($result, $i)]);	
+		$newline[$i] = trim($_POST[mysqli_field_name($result, $i)]);	
 	}
 	else
 		exit("No valid search arguments");	
@@ -88,7 +86,7 @@ for ($i = 1; $i < $fldnum; $i++)
 $query = "UPDATE " . $table_name . " SET ";
 for($i = 1; $i < $fldnum - 1; $i++)
 {
-	$query = $query . mysql_field_name($result, $i) . " = '" . $newline[$i] . "', ";	
+	$query = $query . mysqli_field_name($result, $i) . " = '" . $newline[$i] . "', ";	
 }
 
 	// the STATUS field
@@ -97,14 +95,14 @@ for($i = 1; $i < $fldnum - 1; $i++)
 	else
 		$newline[$i] = 'yes';
 
-	$query = $query . mysql_field_name($result, $i) . " = '" . $newline[$i] . "'";	
+	$query = $query . mysqli_field_name($result, $i) . " = '" . $newline[$i] . "'";	
 
 $query = $query . " WHERE id = " . $id;
 
 //echo $query;
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-mysql_close($link);
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
+mysqli_close($link);
 ?>
 
 </div>

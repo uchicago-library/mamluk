@@ -7,16 +7,14 @@ $link;
 
 function connect()
 {
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
-
-mysql_select_db($db_name) or die('Could not select database');
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
 }
 
 function disconnect()
 {
 	// Closing connection
-	mysql_close($link);	
+	mysqli_close($link);	
 }
 
 ?>

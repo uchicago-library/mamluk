@@ -14,15 +14,13 @@ bl.write();
 <br>
 <br>
 <?php
-	$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-	    or die('Could not connect: ' . mysql_error());
+	$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+	    or die('Could not connect: ' . mysqli_error($link));
 	
-	mysql_query("SET NAMES 'utf8'");
+	mysqli_query($link, "SET NAMES 'utf8'");
 	
 	
 	
-	mysql_select_db($db_name) or die('Could not select database');
-
 //require 'db_connect.php';
 //	connect();
 	$table_name = "main_table";
@@ -42,12 +40,12 @@ if (! is_numeric($id))
 	exit("No valid limit arguments");
 	
 $query = "SELECT * from " . $table_name . " where id = " . $id;		
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($link));
 	
 //echo "\n<table ALIGN='LEFT' border=1>\n";	
 echo "<table ALIGN='left' border=1 bordercolor='#E2E2E2' width='854'>";
 
-while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 	for($i = 1; $i < 29; $i++)
 	{
@@ -55,7 +53,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		{
 		    echo "<tr><td ALIGN='LEFT' VALIGN='TOP' bgcolor='#E2E2E2'><b><font size='2'>";
 			if ($i != 2 && $i != 3)
-				echo mysql_field_name($result, $i);	
+				echo mysqli_field_name($result, $i);	
 			
 			if ($i == 2)
 				echo "Author's last name";	
@@ -66,7 +64,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		
 			echo "<td ALIGN='LEFT' VALIGN='TOP' width='646'><font size='2'>";
 		
-			echo trim($line[mysql_field_name($result, $i)]);
+			echo trim($line[mysqli_field_name($result, $i)]);
 		
 			echo "</font></td></tr>\n";
 		}

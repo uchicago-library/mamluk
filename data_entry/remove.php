@@ -14,11 +14,10 @@ bl.write();
 <br>
 <br>
 <?php
-	$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-	    or die('Could not connect: ' . mysql_error());
+	$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+	    or die('Could not connect: ' . mysqli_error($link));
 	
-	mysql_query("SET NAMES 'utf8'");	
-	mysql_select_db($db_name, $link) or die('Could not select database');
+	mysqli_query($link, "SET NAMES 'utf8'");	
 
 //require 'db_connect.php';
 //	connect();
@@ -56,9 +55,9 @@ else
 
 	
 $query = "DELETE from " . $table_name . " where id = " . $id;		
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($link, $query) or die('Query failed: ' . mysql_error($link));
 
-mysql_close($link);
+mysqli_close($link);
 ?>
 
 </div>

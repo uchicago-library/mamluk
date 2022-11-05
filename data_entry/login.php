@@ -1,13 +1,9 @@
 <?php
 require("funcs.php");
 // Connects to your Database
-$link = mysql_connect($mysql_server, $mysql_user, $mysql_password)
-    or die('Could not connect: ' . mysql_error());
-mysql_query("SET NAMES 'utf8'");
-mysql_select_db($db_name) or die('Could not select database');
-
-//mysql_connect("your.hostaddress.com", "username", "password") or die(mysql_error());
-//mysql_select_db("Database_Name") or die(mysql_error());
+$link = mysqli_connect($mysql_server, $mysql_user, $mysql_password, $db_name)
+    or die('Could not connect: ' . mysqli_error($link));
+mysqli_query($link, "SET NAMES 'utf8'");
 
 //Checks if there is a login cookie
 if(isset($_COOKIE['ID_my_site']))
@@ -16,8 +12,8 @@ if(isset($_COOKIE['ID_my_site']))
 {
 $username = $_COOKIE['ID_my_site'];
 $pass = $_COOKIE['Key_my_site'];
-$check = mysql_query("SELECT * FROM member WHERE username = '$username'")or die(mysql_error());
-while($info = mysql_fetch_array( $check ))
+$check = mysqli_query($link, "SELECT * FROM member WHERE username = '$username'")or die(mysqli_error($link));
+while($info = mysqli_fetch_array( $check ))
 { 	
 if ($pass != $info['password'])
 {
@@ -44,14 +40,14 @@ if (!get_magic_quotes_gpc()) {
 }
 
 
-$check = mysql_query("SELECT * FROM member WHERE username = '".$_POST['username']."'")or die(mysql_error());
+$check = mysqli_query($link, "SELECT * FROM member WHERE username = '".$_POST['username']."'")or die(mysqli_error($link));
 
 //Gives error if user dosen't exist
-$check2 = mysql_num_rows($check);
+$check2 = mysqli_num_rows($check);
 if ($check2 == 0) {
 die('That user does not exist in our database.');
 }
-while($info = mysql_fetch_array( $check ))
+while($info = mysqli_fetch_array( $check ))
 {
 //echo 'password = ' . $info['password'];
 //echo 'pass = ' . $_POST['pass'];
