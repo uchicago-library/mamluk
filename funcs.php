@@ -564,7 +564,7 @@ function session_started(){
 //$mysql_password = "redrose";
 //$db_name = "mamluk1";
 
-$mysql_server = "localhost";
+$mysql_server = "mysql.lib.uchicago.edu";
 $mysql_user = "mh_web"; // please use customized users with very limited privileges.
 $mysql_password = "mht_1005";
 $db_name = "mamluk";       

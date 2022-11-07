@@ -212,7 +212,7 @@ function session_started(){
 
 
 
-$mysql_server = "localhost";
+$mysql_server = "mysql.lib.uchicago.edu";
 $mysql_user = "htho"; // please use customized users with very limited privileges.
 $mysql_password = "hthom_1003";
 $db_name = "mamluk";
