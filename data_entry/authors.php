@@ -55,7 +55,7 @@ else
 
 	$query = "SELECT distinct " . $fld_name . " FROM " . $table_name;	
 
-	$query = "SELECT distinct " . $fld_name . ", count(*) as count FROM " . $table_name . " where (" . $fld_name . " <> '') group by " . $fld_name . " order by id";	
+	$query = "SELECT distinct " . $fld_name . ", count(" . $fld_name . ") as count FROM " . $table_name . " where (" . $fld_name . " <> '') group by " . $fld_name;	
 	
 	$result = mysqli_query($link, $query) or die('Query failed: ' . mysql_error($link));
 

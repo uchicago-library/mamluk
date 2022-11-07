@@ -42,8 +42,8 @@ Mamluk Bibliography Online</a></strong><br>
 
 function item_display($line)
 {
-	$str_form = trim($line[1]);    
-    $str_authrole = ucfirst(trim($line[7]));   
+	$str_form = trim($line[1] ?? '');    
+    $str_authrole = ucfirst(trim($line[7] ?? ''));   
 
     $line_dot = $line;
 	$line_comma = $line;
@@ -52,36 +52,36 @@ function item_display($line)
 	{	
 	    if ($line[$i] != "")
 		{
-	    	$line_dot[$i] = trim($line[$i]) . '. ';
-	    	$line_comma[$i] = trim($line[$i]) . ', ';
+	    	$line_dot[$i] = trim($line[$i] ?? '') . '. ';
+	    	$line_comma[$i] = trim($line[$i] ?? '') . ', ';
 	    
 	    }	    
     }
             
     switch ($str_form) {
 case "Book long":
-    $str_display = trim($line_comma[3]) . ' ' . trim($line_dot[4]) . ' "' . trim($line_dot[5]) . '" In <I>' . trim($line[8]) . '</I>. ' . trim($line_dot[13]) . ' ' . trim($str_authrole) . ' ' . trim($line_dot[6]) . ' ' . trim($line_dot[22]) . ' ' . trim($line[17]) . ': ' . trim($line_comma[18]) . ' ' . trim($line_dot[19]);
+    $str_display = trim($line_comma[3] ?? '') . ' ' . trim($line_dot[4] ?? '') . ' "' . trim($line_dot[5] ?? '') . '" In <I>' . trim($line[8] ?? '') . '</I>. ' . trim($line_dot[13] ?? '') . ' ' . trim($str_authrole ?? '') . ' ' . trim($line_dot[6] ?? '') . ' ' . trim($line_dot[22] ?? '') . ' ' . trim($line[17] ?? '') . ': ' . trim($line_comma[18] ?? '') . ' ' . trim($line_dot[19] ?? '');
     break;
 case "Book short":
-    $str_display = trim($line_dot[31]);
+    $str_display = trim($line_dot[31] ?? '');
     break;
 case "Book reviews":
-    $str_display = trim($line_dot[3]) . ' ' . trim($line_dot[5]) . ' <I>' . trim($line[9]) . '</I> ' . trim($line_comma[20]) . ' ' . trim($line[21]) . ' (' . trim($line[19]) . '): ' . trim($line_dot[22]);
+    $str_display = trim($line_dot[3] ?? '') . ' ' . trim($line_dot[5] ?? '') . ' <I>' . trim($line[9] ?? '') . '</I> ' . trim($line_comma[20] ?? '') . ' ' . trim($line[21] ?? '') . ' (' . trim($line[19] ?? '') . '): ' . trim($line_dot[22] ?? '');
     break;
 case "Dissertations":
-    $str_display = trim($line_dot[3]) . ' <I>"' . trim($line_dot[8]) . '"</I> ' . trim($line_dot[22]) . " " . trim($line_comma[18]) . ' ' . trim($line_dot[19]);
+    $str_display = trim($line_dot[3] ?? '') . ' <I>"' . trim($line_dot[8] ?? '') . '"</I> ' . trim($line_dot[22] ?? '') . " " . trim($line_comma[18] ?? '') . ' ' . trim($line_dot[19] ?? '');
     break;
 case "Journal":
-    $str_display = trim($line_dot[3]) . ' "' . trim($line_dot[5]) . '" <I>' . trim($line[9]) . '</I> ' . trim($line_comma[20]) . ' ' . trim($line[21]) . ' (' . trim($line[19]) . '): ' . trim($line_dot[22]);
+    $str_display = trim($line_dot[3] ?? '') . ' "' . trim($line_dot[5] ?? '') . '" <I>' . trim($line[9] ?? '') . '</I> ' . trim($line_comma[20] ?? '') . ' ' . trim($line[21] ?? '') . ' (' . trim($line[19] ?? '') . '): ' . trim($line_dot[22] ?? '');
     break;
 case "Monographs":
-    $str_display = trim($line_comma[3]) . ' ' . trim($line_dot[4]) . ' <I>' . trim($line[8]) . '</I>. ' . trim($line_dot[13]) . ' ' . trim($str_authrole) . ' ' . trim($line_dot[6]) . ' ' . trim($line_dot[22]) . ' ' . trim($line[17]) . ': ' . trim($line_comma[18]) . ' ' . trim($line_dot[19]);
+    $str_display = trim($line_comma[3] ?? '') . ' ' . trim($line_dot[4] ?? '') . ' <I>' . trim($line[8] ?? '') . '</I>. ' . trim($line_dot[13] ?? '') . ' ' . trim($str_authrole ?? '') . ' ' . trim($line_dot[6] ?? '') . ' ' . trim($line_dot[22] ?? '') . ' ' . trim($line[17] ?? '') . ': ' . trim($line_comma[18] ?? '') . ' ' . trim($line_dot[19] ?? '');
     break;
 case "Conferences":
-    $str_display = trim($line_dot[3]) . ' "' . trim($line_dot[5]) . '" In <I>' . trim($line[8]) . '</I>, '. trim($line_comma[10]) . ' ' . trim($str_authrole) . ' ' . trim($line_comma[6]) . ' ' . trim($line_dot[22]) . ' ' . trim($line_comma[12]) . ' ' . trim($line_dot[11]) . ' ' . trim($line[17]) . ': ' . trim($line_comma[18]) . ' ' . trim($line_dot[19]);
+    $str_display = trim($line_dot[3] ?? '') . ' "' . trim($line_dot[5] ?? '') . '" In <I>' . trim($line[8] ?? '') . '</I>, '. trim($line_comma[10] ?? '') . ' ' . trim($str_authrole ?? '') . ' ' . trim($line_comma[6] ?? '') . ' ' . trim($line_dot[22] ?? '') . ' ' . trim($line_comma[12] ?? '') . ' ' . trim($line_dot[11] ?? '') . ' ' . trim($line[17] ?? '') . ': ' . trim($line_comma[18] ?? '') . ' ' . trim($line_dot[19] ?? '');
     break;
 case "Maps":
-    $str_display = trim($line_dot[3]) . ' ' . trim($line_dot[5]) . ' ' . trim($line_dot[14]) . ' '. trim($line[17]) . ': ' . trim($line_comma[18]) . ' ' . trim($line_dot[19]);
+    $str_display = trim($line_dot[3] ?? '') . ' ' . trim($line_dot[5] ?? '') . ' ' . trim($line_dot[14] ?? '') . ' '. trim($line[17] ?? '') . ': ' . trim($line_comma[18] ?? '') . ' ' . trim($line_dot[19] ?? '');
     break;
 	}
 	
@@ -655,13 +655,13 @@ $i = 1;
 //while (($line = mysqli_fetch_row($result)) && ($i <= $next)) {
 while ($line = mysqli_fetch_row($result)) {
     
-    $str_auth = trim($line[3]);    
-    $str_form = trim($line[1]);    
-	$str_notes = trim($line[26]);
-	$str_subject = trim($line[29]);
-	$str_seriestitle = trim($line[23]);
-	$str_seriesvol =  trim($line[24]);
-	$str_other =  trim($line[31]);
+    $str_auth = trim($line[3] ?? '');    
+    $str_form = trim($line[1] ?? '');    
+	$str_notes = trim($line[26] ?? '');
+	$str_subject = trim($line[29] ?? '');
+	$str_seriestitle = trim($line[23] ?? '');
+	$str_seriesvol =  trim($line[24] ?? '');
+	$str_other =  trim($line[31] ?? '');
 	 	
 	$full_sub_list = array(0 => '');
 	$list_count = 0;

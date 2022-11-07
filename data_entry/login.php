@@ -35,11 +35,6 @@ die('You did not fill in a required field.');
 }
 // checks it against the database
 
-if (!get_magic_quotes_gpc()) {
-//$_POST['email'] = addslashes($_POST['email']);
-}
-
-
 $check = mysqli_query($link, "SELECT * FROM member WHERE username = '".$_POST['username']."'")or die(mysqli_error($link));
 
 //Gives error if user dosen't exist
@@ -67,8 +62,8 @@ else
 // if login is ok then we add a cookie
 $_POST['username'] = stripslashes($_POST['username']);
 $hour = time() + 3600;
-setcookie(ID_my_site, $_POST['username'], $hour);
-setcookie(Key_my_site, $_POST['pass'], $hour);
+setcookie('ID_my_site', $_POST['username'], $hour);
+setcookie('Key_my_site', $_POST['pass'], $hour);
 
 //then redirect them to the members area
 header("Location: start.php");
